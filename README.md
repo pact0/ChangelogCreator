@@ -1,1 +1,1 @@
-# jakub-kowalski-CKEDITOR-recruitment-task
+Recruitment task – Junior JavaScript Developer [Changelog]
