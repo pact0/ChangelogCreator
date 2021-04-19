@@ -103,12 +103,13 @@ function createCompleteChangelog(
       const tags = res.split("\n");
       let correctTags = [];
       let flag = false;
-      fs.writeFileSync(file, "");
       for (let i = 0; i < tags.length; i++) {
         if (tags[i] === versionFrom) flag = true;
         if (flag) correctTags.push(tags[i]);
         if (tags[i] === versionTo) flag = false;
       }
+
+      fs.writeFileSync(file, "");
       let headerFlag = true;
       for (let index = correctTags.length - 1; index > 0; index--) {
         await getCommits(

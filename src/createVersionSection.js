@@ -1,5 +1,4 @@
 const fs = require("fs");
-
 const helper = require("../src/helperFunctions");
 
 function appendBreakingChangesSection(x) {
@@ -30,35 +29,35 @@ function appendSection(x) {
 
 function createMajorBreakingChangesSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n`;
+  let section = `\n### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n\n`;
   changes.forEach((x) => (section += appendBreakingChangesSection(x)));
   return section;
 }
 
 function createMinorBreakingChangesSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n`;
+  let section = `\n### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n\n`;
   changes.forEach((x) => (section += appendBreakingChangesSection(x)));
   return section;
 }
 
 function createFeaturesSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### Features\n`;
+  let section = `\n### Features\n\n`;
   changes.forEach((x) => (section += appendSection(x)));
   return section;
 }
 
 function createFixSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### Bug fixes\n`;
+  let section = `\n### Bug fixes\n\n`;
   changes.forEach((x) => (section += appendSection(x)));
   return section;
 }
 
 function createOtherSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### Other changes\n`;
+  let section = `\n### Other changes\n\n`;
   changes.forEach((x) => (section += appendSection(x)));
   return section;
 }
@@ -113,24 +112,7 @@ async function createVersionSection(
   });
 }
 
-function getIncorrectCommits(comimtMessages, file_name) {
-  console.log(
-    file_name.replace(".md", "_INCORRECT_COMMITS.md"),
-    comimtMessages
-  );
-  fs.appendFile(
-    `${file_name.replace(".md", "_INCORRECT_COMMITS.md")}`,
-    comimtMessages,
-    (err) => {
-      if (err) {
-        throw err;
-      }
-      console.log("File is updated.");
-    }
-  );
-}
 module.exports = {
   createVersionSection: createVersionSection,
-  getIncorrectCommits: getIncorrectCommits,
   appendSection: appendSection,
 };

@@ -43,6 +43,10 @@ const versionFrom = options.versionFrom;
 const versionTo = options.versionTo;
 const file = options.file === undefined ? "CHANGELOG.md" : options.file;
 
+if (versionFrom >= versionTo) {
+  throw new Error("Please provide versions in correct order");
+}
+
 commitManipulation.createCompleteChangelog(
   path,
   versionFrom,
