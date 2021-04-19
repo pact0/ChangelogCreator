@@ -1,4 +1,4 @@
-var fs = require("fs");
+const fs = require("fs");
 
 const helper = require("../src/helperFunctions");
 
@@ -28,30 +28,37 @@ function appendSection(x) {
   }
 }
 
-function createMajorBreakingChangesSection(versionFrom, versionTo, changes) {
+function createMajorBreakingChangesSection(changes) {
   if (changes.length === 0) return "";
-  let section = `### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n\n`;
+  let section = `\n### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n`;
+  changes.forEach((x) => (section += appendBreakingChangesSection(x)));
+  return section;
+}
+
+function createMinorBreakingChangesSection(changes) {
+  if (changes.length === 0) return "";
+  let section = `\n### MINOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)\n`;
   changes.forEach((x) => (section += appendBreakingChangesSection(x)));
   return section;
 }
 
 function createFeaturesSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### Features\n\n`;
+  let section = `\n### Features\n`;
   changes.forEach((x) => (section += appendSection(x)));
   return section;
 }
 
 function createFixSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### Bug fixes\n\n`;
+  let section = `\n### Bug fixes\n`;
   changes.forEach((x) => (section += appendSection(x)));
   return section;
 }
 
 function createOtherSection(changes) {
   if (changes.length === 0) return "";
-  let section = `\n### Other changes\n\n`;
+  let section = `\n### Other changes\n`;
   changes.forEach((x) => (section += appendSection(x)));
   return section;
 }
@@ -60,7 +67,8 @@ async function createVersionSection(
   versionFrom,
   versionTo,
   comimtMessages,
-  file_name
+  file_name,
+  addHeader
 ) {
   // adding current date to all section headers as discussed in the email
   var today = new Date();
@@ -68,15 +76,20 @@ async function createVersionSection(
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
   date = yyyy + "-" + mm + "-" + dd;
-
-  let CHANGELOG = `\n\n## [${versionTo.slice(
-    1
-  )}](https://github.com/ckeditor/ckeditor5/compare/${versionFrom}...${versionTo}) (${date})\n\n`;
+  const header = addHeader === true ? `Changelog\n=========\n` : "";
+  let CHANGELOG =
+    header +
+    `\n## [${versionTo.slice(
+      1
+    )}](https://github.com/ckeditor/ckeditor5/compare/${versionFrom}...${versionTo}) (${date})\n`;
   CHANGELOG +=
     createMajorBreakingChangesSection(
-      versionFrom,
-      versionTo,
       comimtMessages.majorBreakingChanges.sort((a, b) =>
+        helper.compare(a.package, b.package)
+      )
+    ) +
+    createMinorBreakingChangesSection(
+      comimtMessages.minorBreakingChanges.sort((a, b) =>
         helper.compare(a.package, b.package)
       )
     ) +
@@ -119,4 +132,5 @@ function getIncorrectCommits(comimtMessages, file_name) {
 module.exports = {
   createVersionSection: createVersionSection,
   getIncorrectCommits: getIncorrectCommits,
+  appendSection: appendSection,
 };

@@ -1,6 +1,6 @@
 const helper = require("../src/helperFunctions");
 
-describe("exception test", () => {
+describe("path param correctness", () => {
   it("should return a correct path", () => {
     expect(helper.isDir("/home/")).toBe("/home/");
   });
