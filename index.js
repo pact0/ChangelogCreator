@@ -1,36 +1,23 @@
 #!/usr/bin/env node
 const { program } = require("commander");
-let fs = require("fs");
-
-function isDir(path) {
-  try {
-    let stat = fs.lstatSync(path);
-    if (stat.isDirectory()) {
-      return path;
-    }
-  } catch (e) {
-    throw new Error("Incorrect path to dirrectory");
-  }
-}
-
-function isVersion(version) {
-  if (version.match(/v\d+.\d+.\d+/)) {
-    return version;
-  } else {
-    throw new Error("Please provide a correct version number");
-  }
-}
+const git = require("simple-git");
+const helperFunctions = require("./src/helperFunctions");
 program
-  .requiredOption("-p,--path <path>", "path to a directory", isDir)
+  .option("-f,--file <file>", "output file name", helperFunctions.isMarkdown)
+  .requiredOption(
+    "-p,--path <path>",
+    "path to a directory",
+    helperFunctions.isDir
+  )
   .requiredOption(
     "-vf,--versionFrom <versionFrom>",
     "begginign version of changelog",
-    isVersion
+    helperFunctions.isVersion
   )
   .requiredOption(
     "-vt,--versionTo  <versionTo>",
-    "endversion of changelog",
-    isVersion
+    "end version of changelog",
+    helperFunctions.isVersion
   )
   .configureOutput({
     writeOut: (str) => process.stdout.write(`[OUT] ${str}`),
@@ -47,4 +34,23 @@ const options = program.opts();
 const path = options.path;
 const versionFrom = options.versionFrom;
 const versionTo = options.versionTo;
-console.log(path, versionFrom, versionTo);
+const file = options.file === undefined ? "CHANGELOG.md" : options.file;
+
+git(path)
+  .tag()
+  .then((res) => {
+    const tags = res.split("\n");
+    let correctTags = [];
+    let flag = false;
+    for (let i = 0; i < tags.length; i++) {
+      if (tags[i] === versionFrom) flag = true;
+      if (flag) correctTags.push(tags[i]);
+      if (tags[i] === versionTo) flag = false;
+    }
+
+    for (let i = correctTags.length - 1; i > 0; i--) {
+      const from = correctTags[i];
+      const to = correctTags[i - 1];
+      console.log(from, to);
+    }
+  });
