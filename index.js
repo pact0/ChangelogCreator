@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 const { program } = require("commander");
 const git = require("simple-git");
+
 const helperFunctions = require("./src/helperFunctions");
 const createVersionSection = require("./src/createVersionSection");
+
 program
   .option("-f,--file <file>", "output file name", helperFunctions.isMarkdown)
   .requiredOption(

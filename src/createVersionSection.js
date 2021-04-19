@@ -92,7 +92,7 @@ async function createVersionSection(
       comimtMessages.other.sort((a, b) => helper.compare(a.package, b.package))
     );
 
-  await fs.appendFile(file_name, CHANGELOG, (err) => {
+  fs.appendFileSync(file_name, CHANGELOG, (err) => {
     if (err) {
       throw err;
     }
