@@ -2,6 +2,7 @@
 const { program } = require("commander");
 const git = require("simple-git");
 const helperFunctions = require("./src/helperFunctions");
+const createVersionSection = require("./src/createVersionSection");
 program
   .option("-f,--file <file>", "output file name", helperFunctions.isMarkdown)
   .requiredOption(
@@ -36,7 +37,7 @@ const versionFrom = options.versionFrom;
 const versionTo = options.versionTo;
 const file = options.file === undefined ? "CHANGELOG.md" : options.file;
 
-function filterResponse(response) {
+function filterCommitResponse(response) {
   let other = [];
   let fix = [];
   let feature = [];
@@ -107,9 +108,15 @@ function filterResponse(response) {
 async function getCommits(path, from, to, file_name) {
   await git(path)
     .log({ from: from, to: to, symmetric: false })
-    .then((response) => {
-      let comimtMessages = filterResponse(response);
-      console.log(comimtMessages.fix);
+    .then(async (response) => {
+      let comimtMessages = filterCommitResponse(response);
+
+      await createVersionSection.createVersionSection(
+        from,
+        to,
+        comimtMessages,
+        file_name
+      );
     });
 }
 
@@ -119,14 +126,13 @@ git(path)
     const tags = res.split("\n");
     let correctTags = [];
     let flag = false;
+
     for (let i = 0; i < tags.length; i++) {
       if (tags[i] === versionFrom) flag = true;
       if (flag) correctTags.push(tags[i]);
       if (tags[i] === versionTo) flag = false;
     }
 
-    for (let index = correctTags.length - 1; index > 0; index--) {
-      console.log(correctTags, correctTags[index], correctTags[index - 1]);
+    for (let index = correctTags.length - 1; index > 0; index--)
       await getCommits(path, correctTags[index - 1], correctTags[index], file);
-    }
   });
