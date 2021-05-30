@@ -13,6 +13,8 @@ You can also provide additional arguments
 - name of the file `-f` or `--file`
 - special flag which allows to print all commits that do not follow the convention `-n` or `--non_standard`
 
+Also a `-help` command is available and it provides all the necessary information
+
 example
 
 ```shell
