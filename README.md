@@ -37,7 +37,7 @@ I have decided that when being able to specify the range of versions that I want
 This is by no means any sort of official too. It is based on ckeditor5 commits and their naming rules.
 
 # Example file
---------------------------------------------------------------------------------------
+```
 # Changelog
 
 ## [27.0.0](https://github.com/ckeditor/ckeditor5/compare/v26.0.0...v27.0.0) (date)
@@ -72,5 +72,5 @@ This is by no means any sort of official too. It is based on ckeditor5 commits a
 - **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: The `mouseup` event is fired by the `MouseObserver` (see [#9128]https://github.com/ckeditor/ckeditor5/issues/9128). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
 - **[table](https://www.npmjs.com/package/@ckeditor/ckeditor5-table)**: The `mouseup` event is no longer fired by the `MouseEventsObserver` from the ckeditor5-table package (now handled by `MouseObserver`) (see [#9128]https://github.com/ckeditor/ckeditor5/issues/9128). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
 - **[typing](https://www.npmjs.com/package/@ckeditor/ckeditor5-typing)**: The `TwoStepCaretMovement` feature is now using bubbling events. Closes [#7437]https://github.com/ckeditor/ckeditor5/issues/7437. ([commit](https://github.com/ckeditor/ckeditor5/commit/5527283324ad8bef5231acde0e49f9fc78df9c90))
+```
 
---------------------------------------------------------------------------------------
