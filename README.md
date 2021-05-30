@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-The script creates a new file with a privided name (or default CHANGELOG.md) which contains a changelog of commits between specified versions.
+The script creates a new file with a provided name (or default CHANGELOG.md) which contains a changelog of commits between specified versions.
 
 To run the script you need to specify
 
@@ -28,9 +28,9 @@ example
 ## Assumptions
 
 - only the commit messages which follow the naming convention are in the changelog
-- includes commits with and withut package name in them
+- includes commits with and withut package names in them
 - script checks the correctness of input
-- each date next to a version is the current date when the script is ran as agreed upon in emails
+- each date next to a version is the current date when the script runs
 - my OS of choice is linux
 
 I have decided that when being able to specify the range of versions that I want to create the changelog from I would rather overwrite the whole file instead of filtering the existing one and appending.
